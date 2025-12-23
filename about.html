@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Blackjack Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">♠ Blackjack ♥</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="game.html">Play Game</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <h2 class="section-title">About This Project</h2>
+        
+        <div class="about-content">
+            <h3>The Journey from Python to Web</h3>
+            <p>
+                This Blackjack game started as a Python project using Tkinter for the graphical 
+                user interface. The challenge was to bring this desktop application to the web, 
+                making it accessible to anyone with a browser. Using PyScript, a technology that 
+                allows Python to run directly in web browsers, this conversion became possible.
+            </p>
+
+            <h3>Technical Details</h3>
+            <p>The original implementation included:</p>
+            <ul>
+                <li>Complete deck creation with all four suits and thirteen ranks</li>
+                <li>Proper Blackjack hand value calculation with Ace handling (1 or 11)</li>
+                <li>Dealer AI that follows standard casino rules</li>
+                <li>Win/loss/tie detection logic</li>
+                <li>Clean, user-friendly interface</li>
+            </ul>
+
+            <h3>Web Conversion Process</h3>
+            <p>
+                The conversion to web involved several key steps. The Tkinter GUI elements were 
+                replaced with HTML and CSS, creating a modern, responsive interface. The Python 
+                game logic was adapted to work with PyScript, allowing the same algorithms to run 
+                in the browser. JavaScript event handlers were implemented using PyScript's 
+                create_proxy function to connect user interactions with Python functions.
+            </p>
+
+            <h3>Technologies Used</h3>
+            <ul>
+                <li><strong>HTML5:</strong> Semantic markup for structure</li>
+                <li><strong>CSS3:</strong> Modern styling with WCAG AAA compliance</li>
+                <li><strong>PyScript:</strong> Running Python in the browser</li>
+                <li><strong>JavaScript:</strong> Additional interactivity features</li>
+                <li><strong>GitHub Pages:</strong> Free web hosting</li>
+            </ul>
+
+            <h3>Game Rules Implementation</h3>
+            <p>The game follows standard Blackjack rules:</p>
+            <ul>
+                <li>Number cards (2-10) are worth their face value</li>
+                <li>Face cards (Jack, Queen, King) are worth 10 points</li>
+                <li>Aces can be worth either 1 or 11 points (automatically adjusted)</li>
+                <li>The goal is to get as close to 21 as possible without going over</li>
+                <li>The dealer must hit on 16 or less and stand on 17 or more</li>
+            </ul>
+
+            <h3>Design Philosophy</h3>
+            <p>
+                The website design emphasizes clarity and accessibility. All text maintains WCAG 
+                AAA contrast ratios for maximum readability. The interface is responsive, working 
+                seamlessly on desktop computers, tablets, and mobile devices. The color scheme 
+                uses high-contrast combinations to ensure visibility for all users.
+            </p>
+
+            <h3>Future Enhancements</h3>
+            <p>Potential improvements for future versions include:</p>
+            <ul>
+                <li>Betting system with virtual chips</li>
+                <li>Statistics tracking across multiple games</li>
+                <li>Multiple deck support</li>
+                <li>Split and double down options</li>
+                <li>Multiplayer functionality</li>
+                <li>Sound effects and animations</li>
+            </ul>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="game.html" class="cta-button">Try the Game</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Blackjack Game Showcase. Created as a web development project.</p>
+            <p>
+                <a href="index.html">Home</a> | 
+                <a href="game.html">Play</a> | 
+                <a href="about.html">About</a> | 
+                <a href="contact.html">Contact</a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
