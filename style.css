@@ -849,6 +849,360 @@ section {
     color: var(--accent-hover);
 }
 
+/* ========== Gaming Hub Specific Styles ========== */
+
+/* Hero Section for Hub */
+.hero-hub {
+    position: relative;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--secondary-bg), var(--primary-bg));
+}
+
+.hero-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+    animation: pulse-glow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+.hero-title-hub {
+    font-size: 4rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+    letter-spacing: 3px;
+    position: relative;
+    animation: title-shimmer 3s ease-in-out infinite;
+}
+
+@keyframes title-shimmer {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+}
+
+.hero-subtitle-hub {
+    font-size: 1.4rem;
+    color: var(--secondary-text);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Compact Stats Bar */
+.stats-compact {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    padding: 2rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.stat-compact {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+}
+
+.stat-label-compact {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--secondary-text);
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+/* Games Showcase - NEW DESIGN */
+.games-showcase {
+    padding: 4rem 2rem;
+    background: var(--primary-bg);
+}
+
+.games-showcase .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+}
+
+.showcase-card {
+    position: relative;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 3px solid var(--border-color);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.showcase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-hover));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.showcase-card:hover::before {
+    transform: scaleX(1);
+}
+
+.showcase-card:hover {
+    transform: translateY(-15px) scale(1.02);
+    box-shadow: 0 30px 80px rgba(255, 215, 0, 0.3);
+    border-color: var(--accent-color);
+}
+
+.card-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.showcase-card:hover .card-glow {
+    opacity: 1;
+}
+
+.card-icon-large {
+    font-size: 6rem;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 8px 20px rgba(255, 215, 0, 0.4));
+    animation: float 3s ease-in-out infinite;
+}
+
+.card-game-title {
+    font-size: 2.2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+}
+
+.card-description {
+    color: var(--secondary-text);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    min-height: 60px;
+}
+
+.card-mini-stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: var(--secondary-bg);
+    border-radius: 12px;
+}
+
+.mini-stat {
+    text-align: center;
+}
+
+.mini-label {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--secondary-text);
+    margin-bottom: 0.3rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.mini-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--accent-color);
+}
+
+/* PLAY NOW Button - HUGE and GLOWING */
+.play-btn-large {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 1.5rem 3rem;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    color: var(--primary-bg);
+    border: none;
+    border-radius: 16px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+}
+
+.play-btn-large span {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.play-btn-large:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 50px rgba(255, 215, 0, 0.7);
+}
+
+.play-btn-large:hover .btn-glow {
+    width: 400px;
+    height: 400px;
+}
+
+.play-btn-large:active {
+    transform: translateY(-1px) scale(1.02);
+}
+
+/* Card Color Variations */
+.blackjack-card:hover {
+    box-shadow: 0 30px 80px rgba(0, 255, 136, 0.3);
+}
+
+.slots-card:hover {
+    box-shadow: 0 30px 80px rgba(255, 71, 87, 0.3);
+}
+
+.dice-card:hover {
+    box-shadow: 0 30px 80px rgba(128, 0, 255, 0.3);
+}
+
+.higher-card:hover {
+    box-shadow: 0 30px 80px rgba(0, 170, 255, 0.3);
+}
+
+.memory-card:hover {
+    box-shadow: 0 30px 80px rgba(255, 165, 0, 0.3);
+}
+
+/* Bottom CTA */
+.bottom-cta {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: var(--secondary-bg);
+}
+
+.cta-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    color: var(--secondary-text);
+    margin-bottom: 2rem;
+}
+
+.reset-all-btn {
+    padding: 1.2rem 3rem;
+    background: var(--danger);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4);
+}
+
+.reset-all-btn:hover {
+    background: #e63946;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(255, 71, 87, 0.6);
+}
+
+.games-section {
+    padding: 4rem 0;
+    background: var(--secondary-bg);
+}
+
+/* Old grid styles - keeping for backwards compatibility */
+.games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.game-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
 /* ========== Responsive Design ========== */
 @media (max-width: 768px) {
     .nav-container {
