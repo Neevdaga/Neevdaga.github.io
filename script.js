@@ -1,75 +1,90 @@
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
+// ========== INITIALIZATION ==========
+document.addEventListener('DOMContentLoaded', function() {
+    initializeTheme();
+    initializeResetButton();
+    initializeFormHandling();
+    initializeAnimations();
 });
 
 // ========== DARK MODE TOGGLE ==========
-const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
+function initializeTheme() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (!themeToggle) return;
 
-// Check for saved theme preference or default to light mode
-const currentTheme = localStorage.getItem('theme') || 'light';
-if (currentTheme === 'dark') {
-    body.classList.add('dark-mode');
-    if (themeToggle) themeToggle.textContent = '☀️';
-}
+    // Check for saved theme preference or default to dark mode
+    const currentTheme = localStorage.getItem('theme') || 'dark';
+    
+    if (currentTheme === 'light') {
+        document.body.classList.add('light-mode');
+        themeToggle.textContent = '🌙';
+    } else {
+        document.body.classList.remove('light-mode');
+        themeToggle.textContent = '☀️';
+    }
 
-// Toggle theme
-if (themeToggle) {
+    // Toggle theme on click
     themeToggle.addEventListener('click', function() {
-        body.classList.toggle('dark-mode');
+        document.body.classList.toggle('light-mode');
         
-        // Update button icon
-        if (body.classList.contains('dark-mode')) {
-            themeToggle.textContent = '☀️';
-            localStorage.setItem('theme', 'dark');
-        } else {
+        // Update button icon and save preference
+        if (document.body.classList.contains('light-mode')) {
             themeToggle.textContent = '🌙';
             localStorage.setItem('theme', 'light');
+            console.log('Switched to light mode');
+        } else {
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+            console.log('Switched to dark mode');
         }
     });
 }
 
-// ========== RESET STATISTICS ==========
-const resetStatsBtn = document.getElementById('reset-stats');
-if (resetStatsBtn) {
+// ========== RESET STATISTICS BUTTON ==========
+function initializeResetButton() {
+    const resetStatsBtn = document.getElementById('reset-stats');
+    if (!resetStatsBtn) return;
+
     resetStatsBtn.addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
+        const confirmed = confirm('🎲 Are you sure you want to reset all statistics?\n\nThis will erase:\n• All wins\n• All losses\n• All ties\n• Your win rate\n\nThis action cannot be undone!');
+        
+        if (confirmed) {
+            // Reset all stats in localStorage
             localStorage.setItem('blackjack_wins', '0');
             localStorage.setItem('blackjack_losses', '0');
             localStorage.setItem('blackjack_ties', '0');
             
-            // Update display
-            document.getElementById('wins-count').textContent = '0';
-            document.getElementById('losses-count').textContent = '0';
-            document.getElementById('ties-count').textContent = '0';
-            document.getElementById('win-rate').textContent = '0%';
+            // Update display immediately
+            const winsCount = document.getElementById('wins-count');
+            const lossesCount = document.getElementById('losses-count');
+            const tiesCount = document.getElementById('ties-count');
+            const winRate = document.getElementById('win-rate');
             
-            // Show confirmation
-            const originalText = resetStatsBtn.textContent;
-            resetStatsBtn.textContent = 'Reset!';
-            resetStatsBtn.style.backgroundColor = '#4caf50';
+            if (winsCount) winsCount.textContent = '0';
+            if (lossesCount) lossesCount.textContent = '0';
+            if (tiesCount) tiesCount.textContent = '0';
+            if (winRate) winRate.textContent = '0%';
+            
+            // Visual feedback
+            resetStatsBtn.textContent = '✓ Reset!';
+            resetStatsBtn.style.backgroundColor = '#00ff88';
+            resetStatsBtn.style.color = '#000';
             
             setTimeout(() => {
-                resetStatsBtn.textContent = originalText;
+                resetStatsBtn.textContent = 'Reset Stats';
                 resetStatsBtn.style.backgroundColor = '';
+                resetStatsBtn.style.color = '';
             }, 2000);
+            
+            console.log('Statistics reset successfully');
         }
     });
 }
 
-// Contact form submission handler
-const contactForm = document.getElementById('contact-form');
-if (contactForm) {
+// ========== CONTACT FORM HANDLING ==========
+function initializeFormHandling() {
+    const contactForm = document.getElementById('contact-form');
+    if (!contactForm) return;
+
     contactForm.addEventListener('submit', function(e) {
         e.preventDefault();
         
@@ -81,108 +96,187 @@ if (contactForm) {
         
         // Display success message
         const responseDiv = document.getElementById('form-response');
-        responseDiv.innerHTML = `
-            <div style="background-color: #d4edda; color: #006400; padding: 1.5rem; border-radius: 8px; border: 3px solid #006400;">
-                <strong>Thank you, ${name}!</strong><br>
-                Your message has been received. We'll get back to you at ${email} soon!
-            </div>
-        `;
+        if (responseDiv) {
+            responseDiv.innerHTML = `
+                <div style="background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 230, 122, 0.2)); 
+                            color: #00ff88; 
+                            padding: 2rem; 
+                            border-radius: 16px; 
+                            border: 3px solid #00ff88;
+                            font-weight: 700;
+                            font-size: 1.1rem;">
+                    ✓ Thank you, ${name}!<br>
+                    Your message has been received. We'll get back to you at ${email} soon!
+                </div>
+            `;
+            
+            // Clear form
+            contactForm.reset();
+            
+            // Scroll to response
+            responseDiv.scrollIntoView({ behavior: 'smooth' });
+        }
         
-        // Clear form
-        contactForm.reset();
-        
-        // Scroll to response
-        responseDiv.scrollIntoView({ behavior: 'smooth' });
-        
-        // In a real application, you would send this data to a server
         console.log('Form submitted:', { name, email, subject, message });
+    });
+
+    // Add real-time validation feedback
+    const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            if (this.validity.valid) {
+                this.style.borderColor = '#00ff88';
+            } else if (this.value) {
+                this.style.borderColor = '#ff4757';
+            }
+        });
+        
+        input.addEventListener('focus', function() {
+            this.style.borderColor = '#ffd700';
+        });
     });
 }
 
-// Add active class to current navigation item
+// ========== ANIMATIONS ==========
+function initializeAnimations() {
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Intersection Observer for fade-in animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '0';
+                entry.target.style.transform = 'translateY(30px)';
+                entry.target.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                
+                setTimeout(() => {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }, 100);
+                
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe feature cards
+    const featureCards = document.querySelectorAll('.feature-card');
+    featureCards.forEach(card => {
+        observer.observe(card);
+    });
+
+    // Observe score items
+    const scoreItems = document.querySelectorAll('.score-item');
+    scoreItems.forEach(item => {
+        observer.observe(item);
+    });
+}
+
+// ========== ACTIVE NAVIGATION ==========
 const currentLocation = window.location.pathname;
 const navLinks = document.querySelectorAll('.nav-menu a');
 
 navLinks.forEach(link => {
-    if (link.getAttribute('href') === currentLocation.split('/').pop() || 
-        (currentLocation.endsWith('/') && link.getAttribute('href') === 'index.html')) {
+    const href = link.getAttribute('href');
+    if (href === currentLocation.split('/').pop() || 
+        (currentLocation.endsWith('/') && href === 'index.html')) {
         link.classList.add('active');
     }
 });
 
-// Animate feature cards on scroll
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '0';
-            entry.target.style.transform = 'translateY(20px)';
-            entry.target.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-            
-            setTimeout(() => {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }, 100);
-            
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-// Observe all feature cards
-const featureCards = document.querySelectorAll('.feature-card');
-featureCards.forEach(card => {
-    observer.observe(card);
-});
-
-// Form validation feedback
-const formInputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
-formInputs.forEach(input => {
-    input.addEventListener('blur', function() {
-        if (this.validity.valid) {
-            this.style.borderColor = '#006400';
-        } else {
-            this.style.borderColor = '#8b0000';
-        }
-    });
-    
-    input.addEventListener('focus', function() {
-        this.style.borderColor = '#0051a5';
+// ========== BUTTON EFFECTS ==========
+const ctaButtons = document.querySelectorAll('.cta-button, .secondary-button, .game-button');
+ctaButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+        // Ripple effect
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            position: absolute;
+            width: ${size}px;
+            height: ${size}px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            left: ${x}px;
+            top: ${y}px;
+            pointer-events: none;
+            animation: ripple 0.6s ease-out;
+        `;
+        
+        this.style.position = 'relative';
+        this.style.overflow = 'hidden';
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
     });
 });
 
-// Keyboard accessibility enhancement
+// Add ripple animation
+if (!document.getElementById('ripple-animation')) {
+    const style = document.createElement('style');
+    style.id = 'ripple-animation';
+    style.textContent = `
+        @keyframes ripple {
+            from {
+                transform: scale(0);
+                opacity: 1;
+            }
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// ========== KEYBOARD SHORTCUTS ==========
 document.addEventListener('keydown', function(e) {
+    // Don't trigger if user is typing in an input
+    if (document.activeElement.tagName === 'INPUT' || 
+        document.activeElement.tagName === 'TEXTAREA') {
+        return;
+    }
+    
     // Press 'H' to go home
-    if (e.key === 'h' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    if (e.key === 'h' || e.key === 'H') {
         window.location.href = 'index.html';
     }
     
     // Press 'G' to go to game
-    if (e.key === 'g' && !e.ctrlKey && !e.metaKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+    if (e.key === 'g' || e.key === 'G') {
         window.location.href = 'game.html';
+    }
+    
+    // Press 'T' to toggle theme
+    if (e.key === 't' || e.key === 'T') {
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) themeToggle.click();
     }
 });
 
-// Add loading animation to CTA buttons
-const ctaButtons = document.querySelectorAll('.cta-button, .secondary-button');
-ctaButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-        if (!this.href || this.href === '#') {
-            return;
-        }
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = 'scale(1)';
-        }, 150);
-    });
-});
-
-// Display current year in footer
+// ========== FOOTER YEAR ==========
 const footerYears = document.querySelectorAll('.footer p');
 footerYears.forEach(p => {
     if (p.textContent.includes('2024')) {
@@ -191,12 +285,18 @@ footerYears.forEach(p => {
     }
 });
 
-// Console Easter egg
-console.log('%c♠♥♦♣ Welcome to Blackjack! ♣♦♥♠', 'font-size: 20px; color: #0051a5; font-weight: bold;');
-console.log('%cPress H to go Home, G to play the Game', 'font-size: 14px; color: #666;');
+// ========== CONSOLE WELCOME MESSAGE ==========
+console.log('%c♠♥♦♣ BLACKJACK ♣♦♥♠', 
+    'font-size: 24px; font-weight: bold; color: #ffd700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);');
+console.log('%cKeyboard Shortcuts:', 
+    'font-size: 14px; color: #4da6ff; font-weight: bold;');
+console.log('%c• Press H → Home', 'color: #b8c5d6;');
+console.log('%c• Press G → Play Game', 'color: #b8c5d6;');
+console.log('%c• Press T → Toggle Theme', 'color: #b8c5d6;');
 
-// Performance monitoring
+// ========== PERFORMANCE MONITORING ==========
 window.addEventListener('load', function() {
     const loadTime = performance.now();
-    console.log(`Page loaded in ${Math.round(loadTime)}ms`);
+    console.log(`%c⚡ Page loaded in ${Math.round(loadTime)}ms`, 
+        'color: #00ff88; font-weight: bold;');
 });
