@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higher or Lower - Game Arcade</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🃏 HIGHER OR LOWER</h1>
+            <ul class="nav-menu">
+                <li><a href="../index.html">← Back to Games</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">☀️</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Score Tracker -->
+    <div class="score-tracker">
+        <div class="container">
+            <div class="score-grid">
+                <div class="score-item">
+                    <span class="score-label">Current Streak</span>
+                    <span id="current-streak" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Best Streak</span>
+                    <span id="best-streak" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Total Wins</span>
+                    <span id="wins-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Games Played</span>
+                    <span id="games-count" class="score-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <h2 class="game-title">🃏 HIGHER OR LOWER</h2>
+        
+        <div class="game-area">
+            <h3 class="hand-title">Will the next card be higher or lower?</h3>
+            
+            <!-- Cards Display -->
+            <div class="cards-row">
+                <div class="card-container">
+                    <div class="card-label">Current Card:</div>
+                    <div class="playing-card" id="current-card">
+                        <div class="card-value">A</div>
+                        <div class="card-suit">♠</div>
+                    </div>
+                    <div class="card-number" id="current-number">14</div>
+                </div>
+                
+                <div class="vs-symbol">VS</div>
+                
+                <div class="card-container">
+                    <div class="card-label">Next Card:</div>
+                    <div class="playing-card face-down" id="next-card">
+                        <div class="card-back">?</div>
+                    </div>
+                    <div class="card-number" id="next-number">?</div>
+                </div>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <p><strong>How to Play:</strong> Guess if the next card will be higher or lower than the current card.</p>
+                <p><strong>Card Values:</strong> 2=2, 3=3 ... 10=10, J=11, Q=12, K=13, A=14</p>
+                <p><strong>Tie:</strong> If cards are equal, you lose!</p>
+            </div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button id="lower-btn" class="game-button stand">⬇ LOWER</button>
+            <button id="higher-btn" class="game-button hit">⬆ HIGHER</button>
+            <button id="new-game-btn" class="game-button new-game">NEW GAME</button>
+        </div>
+
+        <!-- Game Message -->
+        <div id="game-message" class="game-message"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Game Arcade. Created as a web development project.</p>
+            <p><a href="../index.html">Back to Games</a></p>
+        </div>
+    </footer>
+
+    <style>
+        .cards-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .card-container {
+            text-align: center;
+        }
+
+        .card-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .playing-card {
+            width: 180px;
+            height: 260px;
+            background: var(--card-bg);
+            border: 4px solid var(--accent-color);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .playing-card.face-down {
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+        }
+
+        .card-value {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #1a1a1a;
+        }
+
+        .card-suit {
+            font-size: 5rem;
+            margin-top: -1rem;
+        }
+
+        .card-suit.red {
+            color: #ff4757;
+        }
+
+        .card-back {
+            font-size: 6rem;
+            color: var(--primary-bg);
+            font-weight: 800;
+        }
+
+        .card-number {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-text);
+        }
+
+        .vs-symbol {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .playing-card.flip {
+            animation: flipCard 0.6s ease;
+        }
+
+        @keyframes flipCard {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(90deg); }
+            100% { transform: rotateY(0deg); }
+        }
+
+        .info-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .info-box p {
+            margin: 0.5rem 0;
+            color: var(--secondary-text);
+        }
+
+        .info-box strong {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .playing-card {
+                width: 140px;
+                height: 200px;
+            }
+            
+            .card-value {
+                font-size: 3rem;
+            }
+            
+            .card-suit {
+                font-size: 3.5rem;
+            }
+            
+            .vs-symbol {
+                font-size: 2rem;
+            }
+        }
+    </style>
+
+    <script src="../script.js"></script>
+    <script>
+        const suits = ['♠', '♥', '♦', '♣'];
+        const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        const values = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
+
+        let currentStreak = 0;
+        let bestStreak = parseInt(localStorage.getItem('higher_best_streak')) || 0;
+        let totalWins = parseInt(localStorage.getItem('higher_wins')) || 0;
+        let gamesPlayed = parseInt(localStorage.getItem('higher_plays')) || 0;
+        
+        let currentCard = null;
+        let nextCard = null;
+        let isRevealing = false;
+
+        const currentCardEl = document.getElementById('current-card');
+        const nextCardEl = document.getElementById('next-card');
+        const higherBtn = document.getElementById('higher-btn');
+        const lowerBtn = document.getElementById('lower-btn');
+        const newGameBtn = document.getElementById('new-game-btn');
+        const messageDiv = document.getElementById('game-message');
+
+        updateDisplay();
+        dealInitialCard();
+
+        higherBtn.addEventListener('click', () => makeGuess('higher'));
+        lowerBtn.addEventListener('click', () => makeGuess('lower'));
+        newGameBtn.addEventListener('click', newGame);
+
+        function dealInitialCard() {
+            currentCard = getRandomCard();
+            displayCard(currentCard, currentCardEl, 'current-number');
+            nextCardEl.classList.add('face-down');
+            nextCardEl.innerHTML = '<div class="card-back">?</div>';
+            document.getElementById('next-number').textContent = '?';
+        }
+
+        function getRandomCard() {
+            const rank = ranks[Math.floor(Math.random() * ranks.length)];
+            const suit = suits[Math.floor(Math.random() * suits.length)];
+            return { rank, suit, value: values[rank] };
+        }
+
+        function displayCard(card, element, numberId) {
+            const isRed = card.suit === '♥' || card.suit === '♦';
+            element.classList.remove('face-down');
+            element.innerHTML = `
+                <div class="card-value">${card.rank}</div>
+                <div class="card-suit ${isRed ? 'red' : ''}">${card.suit}</div>
+            `;
+            document.getElementById(numberId).textContent = card.value;
+        }
+
+        function makeGuess(guess) {
+            if (isRevealing) return;
+
+            isRevealing = true;
+            higherBtn.disabled = true;
+            lowerBtn.disabled = true;
+
+            // Generate next card
+            nextCard = getRandomCard();
+            
+            // Reveal with animation
+            nextCardEl.classList.add('flip');
+            
+            setTimeout(() => {
+                displayCard(nextCard, nextCardEl, 'next-number');
+                checkResult(guess);
+            }, 300);
+
+            setTimeout(() => {
+                nextCardEl.classList.remove('flip');
+            }, 600);
+        }
+
+        function checkResult(guess) {
+            gamesPlayed++;
+            localStorage.setItem('higher_plays', gamesPlayed);
+
+            let won = false;
+            let message = '';
+
+            if (nextCard.value === currentCard.value) {
+                message = `TIE! Both cards are ${nextCard.value}. You lose!`;
+            } else if (guess === 'higher' && nextCard.value > currentCard.value) {
+                won = true;
+                message = `Correct! ${nextCard.value} is higher than ${currentCard.value}`;
+            } else if (guess === 'lower' && nextCard.value < currentCard.value) {
+                won = true;
+                message = `Correct! ${nextCard.value} is lower than ${currentCard.value}`;
+            } else {
+                message = `Wrong! ${nextCard.value} is ${nextCard.value > currentCard.value ? 'higher' : 'lower'} than ${currentCard.value}`;
+            }
+
+            if (won) {
+                currentStreak++;
+                totalWins++;
+                if (currentStreak > bestStreak) {
+                    bestStreak = currentStreak;
+                    localStorage.setItem('higher_best_streak', bestStreak);
+                    message += ' 🔥 NEW RECORD!';
+                }
+                localStorage.setItem('higher_wins', totalWins);
+                showMessage(message, 'win');
+                
+                // Continue: next card becomes current card
+                setTimeout(() => {
+                    currentCard = nextCard;
+                    currentCardEl.innerHTML = nextCardEl.innerHTML;
+                    document.getElementById('current-number').textContent = currentCard.value;
+                    
+                    nextCardEl.classList.add('face-down');
+                    nextCardEl.innerHTML = '<div class="card-back">?</div>';
+                    document.getElementById('next-number').textContent = '?';
+                    
+                    messageDiv.textContent = `Streak: ${currentStreak} 🔥 Keep going!`;
+                    isRevealing = false;
+                    higherBtn.disabled = false;
+                    lowerBtn.disabled = false;
+                }, 2000);
+            } else {
+                currentStreak = 0;
+                showMessage(message, 'lose');
+                isRevealing = false;
+            }
+
+            updateDisplay();
+        }
+
+        function newGame() {
+            currentStreak = 0;
+            isRevealing = false;
+            higherBtn.disabled = false;
+            lowerBtn.disabled = false;
+            messageDiv.textContent = '';
+            messageDiv.className = 'game-message';
+            dealInitialCard();
+            updateDisplay();
+        }
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `game-message ${type}`;
+        }
+
+        function updateDisplay() {
+            document.getElementById('current-streak').textContent = currentStreak;
+            document.getElementById('best-streak').textContent = bestStreak;
+            document.getElementById('wins-count').textContent = totalWins;
+            document.getElementById('games-count').textContent = gamesPlayed;
+        }
+    </script>
+</body>
+</html>
