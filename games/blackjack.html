@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack - Game Arcade</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">♠ BLACKJACK ♥</h1>
+            <ul class="nav-menu">
+                <li><a href="../index.html">← Back to Games</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">☀️</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Score Tracker -->
+    <div class="score-tracker">
+        <div class="container">
+            <div class="score-grid">
+                <div class="score-item">
+                    <span class="score-label">Wins</span>
+                    <span id="wins-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Losses</span>
+                    <span id="losses-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Ties</span>
+                    <span id="ties-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Win Rate</span>
+                    <span id="win-rate" class="score-value">0%</span>
+                </div>
+                <div class="score-item">
+                    <button id="reset-stats" class="reset-button">Reset Stats</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <h2 class="game-title">BLACKJACK</h2>
+        
+        <div class="game-area">
+            <!-- Dealer's Hand -->
+            <div class="hand-section">
+                <h3 class="hand-title">Dealer's Hand:</h3>
+                <div id="dealer-cards" class="cards-display"></div>
+                <div id="dealer-total" class="total-display">Total: ?</div>
+            </div>
+
+            <!-- Player's Hand -->
+            <div class="hand-section">
+                <h3 class="hand-title">Your Hand:</h3>
+                <div id="player-cards" class="cards-display"></div>
+                <div id="player-total" class="total-display">Total: 0</div>
+            </div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button id="hit-btn" class="game-button hit">HIT</button>
+            <button id="stand-btn" class="game-button stand">STAND</button>
+            <button id="new-game-btn" class="game-button new-game">NEW GAME</button>
+        </div>
+
+        <!-- Game Message -->
+        <div id="game-message" class="game-message"></div>
+    </div>
+
+    <script type="py" config="../pyscript.json">
+import random
+from js import document, localStorage
+
+# Game state
+deck = []
+player_hand = []
+dealer_hand = []
+game_over = False
+
+# Load stats from localStorage
+def load_stats():
+    try:
+        wins = int(localStorage.getItem('blackjack_wins') or '0')
+        losses = int(localStorage.getItem('blackjack_losses') or '0')
+        ties = int(localStorage.getItem('blackjack_ties') or '0')
+        return wins, losses, ties
+    except:
+        return 0, 0, 0
+
+def save_stats(wins, losses, ties):
+    localStorage.setItem('blackjack_wins', str(wins))
+    localStorage.setItem('blackjack_losses', str(losses))
+    localStorage.setItem('blackjack_ties', str(ties))
+
+def update_stats_display():
+    wins, losses, ties = load_stats()
+    document.getElementById('wins-count').innerHTML = str(wins)
+    document.getElementById('losses-count').innerHTML = str(losses)
+    document.getElementById('ties-count').innerHTML = str(ties)
+    
+    total_games = wins + losses
+    if total_games > 0:
+        win_rate = round((wins / total_games) * 100)
+        document.getElementById('win-rate').innerHTML = f"{win_rate}%"
+    else:
+        document.getElementById('win-rate').innerHTML = "0%"
+
+def record_result(result):
+    wins, losses, ties = load_stats()
+    if result == 'win':
+        wins += 1
+    elif result == 'loss':
+        losses += 1
+    elif result == 'tie':
+        ties += 1
+    save_stats(wins, losses, ties)
+    update_stats_display()
+
+def create_deck():
+    """Create a standard deck of cards"""
+    suits = ['♠', '♥', '♦', '♣']
+    ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
+    new_deck = []
+    for suit in suits:
+        for rank in ranks:
+            new_deck.append(rank + suit)
+    return new_deck
+
+def calculate_hand_value(hand):
+    """Calculate the value of a hand"""
+    total = 0
+    ace_count = 0
+    
+    for card in hand:
+        rank = card[:-1]
+        
+        if rank == 'A':
+            total += 11
+            ace_count += 1
+        elif rank in ['K', 'Q', 'J']:
+            total += 10
+        else:
+            total += int(rank)
+    
+    while total > 21 and ace_count > 0:
+        total -= 10
+        ace_count -= 1
+    
+    return total
+
+def update_display(hide_dealer=False):
+    """Update the card display"""
+    player_cards_text = "  ".join(player_hand)
+    document.getElementById("player-cards").innerHTML = player_cards_text
+    player_total = calculate_hand_value(player_hand)
+    document.getElementById("player-total").innerHTML = f"Total: {player_total}"
+    
+    if hide_dealer:
+        dealer_cards_text = f"{dealer_hand[0]}  ??"
+        document.getElementById("dealer-cards").innerHTML = dealer_cards_text
+        document.getElementById("dealer-total").innerHTML = "Total: ?"
+    else:
+        dealer_cards_text = "  ".join(dealer_hand)
+        document.getElementById("dealer-cards").innerHTML = dealer_cards_text
+        dealer_total = calculate_hand_value(dealer_hand)
+        document.getElementById("dealer-total").innerHTML = f"Total: {dealer_total}"
+
+def new_game(event=None):
+    """Start a new game"""
+    global deck, player_hand, dealer_hand, game_over
+    
+    deck = create_deck()
+    random.shuffle(deck)
+    player_hand = []
+    dealer_hand = []
+    game_over = False
+    
+    player_hand.append(deck.pop())
+    player_hand.append(deck.pop())
+    dealer_hand.append(deck.pop())
+    dealer_hand.append(deck.pop())
+    
+    document.getElementById("hit-btn").disabled = False
+    document.getElementById("stand-btn").disabled = False
+    
+    message_elem = document.getElementById("game-message")
+    message_elem.innerHTML = "Make your move!"
+    message_elem.className = "game-message"
+    
+    update_display(hide_dealer=True)
+
+def hit(event):
+    """Player chooses to hit"""
+    global game_over
+    
+    if game_over:
+        return
+    
+    player_hand.append(deck.pop())
+    update_display(hide_dealer=True)
+    
+    player_total = calculate_hand_value(player_hand)
+    
+    if player_total > 21:
+        game_over = True
+        message_elem = document.getElementById("game-message")
+        message_elem.innerHTML = "BUST! You lose! 💥"
+        message_elem.className = "game-message lose"
+        document.getElementById("hit-btn").disabled = True
+        document.getElementById("stand-btn").disabled = True
+        record_result('loss')
+    elif player_total == 21:
+        stand(None)
+
+def stand(event):
+    """Player chooses to stand"""
+    global game_over
+    
+    if game_over:
+        return
+    
+    game_over = True
+    document.getElementById("hit-btn").disabled = True
+    document.getElementById("stand-btn").disabled = True
+    
+    update_display(hide_dealer=False)
+    
+    while calculate_hand_value(dealer_hand) < 17:
+        dealer_hand.append(deck.pop())
+        update_display(hide_dealer=False)
+    
+    player_total = calculate_hand_value(player_hand)
+    dealer_total = calculate_hand_value(dealer_hand)
+    
+    message_elem = document.getElementById("game-message")
+    
+    if dealer_total > 21:
+        message_elem.innerHTML = "Dealer busts! You WIN! 🎉"
+        message_elem.className = "game-message win"
+        record_result('win')
+    elif dealer_total > player_total:
+        message_elem.innerHTML = "Dealer wins! 😞"
+        message_elem.className = "game-message lose"
+        record_result('loss')
+    elif player_total > dealer_total:
+        message_elem.innerHTML = "You WIN! 🎉"
+        message_elem.className = "game-message win"
+        record_result('win')
+    else:
+        message_elem.innerHTML = "PUSH! It's a tie! 🤝"
+        message_elem.className = "game-message tie"
+        record_result('tie')
+
+# Set up event listeners
+from pyodide.ffi import create_proxy
+
+hit_proxy = create_proxy(hit)
+stand_proxy = create_proxy(stand)
+new_game_proxy = create_proxy(new_game)
+
+document.getElementById("hit-btn").addEventListener("click", hit_proxy)
+document.getElementById("stand-btn").addEventListener("click", stand_proxy)
+document.getElementById("new-game-btn").addEventListener("click", new_game_proxy)
+
+# Initialize stats display
+update_stats_display()
+
+# Start the first game
+new_game()
+    </script>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Game Arcade. Created as a web development project.</p>
+            <p><a href="../index.html">Back to Games</a></p>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>
