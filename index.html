@@ -21,146 +21,154 @@
         </div>
     </nav>
 
-    <!-- Global Stats Bar -->
-    <div class="score-tracker">
-        <div class="container">
-            <div class="score-grid">
-                <div class="score-item">
-                    <span class="score-label">Total Wins</span>
-                    <span id="total-wins" class="score-value">0</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">Games Played</span>
-                    <span id="total-games" class="score-value">0</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">Win Rate</span>
-                    <span id="overall-winrate" class="score-value">0%</span>
-                </div>
-                <div class="score-item">
-                    <span class="score-label">Favorite Game</span>
-                    <span id="favorite-game" class="score-value">-</span>
-                </div>
-                <div class="score-item">
-                    <button id="reset-all-stats" class="reset-button">Reset All Stats</button>
-                </div>
-            </div>
+    <!-- Hero Section with Glowing Title -->
+    <section class="hero-hub">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <h2 class="hero-title-hub">🎮 CHOOSE YOUR GAME 🎮</h2>
+            <p class="hero-subtitle-hub">5 Epic Games • Endless Fun • All in Your Browser</p>
+        </div>
+    </section>
+
+    <!-- Global Stats Compact -->
+    <div class="stats-compact">
+        <div class="stat-compact">
+            <span class="stat-number" id="total-wins">0</span>
+            <span class="stat-label-compact">Total Wins</span>
+        </div>
+        <div class="stat-compact">
+            <span class="stat-number" id="total-games">0</span>
+            <span class="stat-label-compact">Games Played</span>
+        </div>
+        <div class="stat-compact">
+            <span class="stat-number" id="overall-winrate">0%</span>
+            <span class="stat-label-compact">Win Rate</span>
         </div>
     </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2 class="hero-title">Welcome to Game Arcade</h2>
-            <p class="hero-subtitle">Choose Your Game & Start Playing!</p>
-            <p class="hero-description">
-                From classic casino games to brain teasers - all playable right in your browser.
-                Track your stats, compete with yourself, and have fun!
-            </p>
-        </div>
-    </section>
-
-    <!-- Games Grid -->
-    <section class="games-section">
+    <!-- Games Grid - REDESIGNED -->
+    <section class="games-showcase">
         <div class="container">
-            <h2 class="section-title">Available Games</h2>
             
-            <div class="games-grid">
-                <!-- Blackjack -->
-                <div class="game-card">
-                    <div class="game-icon">♠️</div>
-                    <h3 class="game-title">Blackjack</h3>
-                    <p class="game-description">Classic card game. Get to 21 without busting!</p>
-                    <div class="game-stats">
-                        <span>Wins: <strong id="blackjack-wins">0</strong></span>
-                        <span>Played: <strong id="blackjack-plays">0</strong></span>
+            <!-- Game Card 1: Blackjack -->
+            <div class="showcase-card blackjack-card">
+                <div class="card-glow"></div>
+                <div class="card-icon-large">♠️♥️</div>
+                <h2 class="card-game-title">BLACKJACK</h2>
+                <p class="card-description">Classic casino card game. Beat the dealer and get to 21!</p>
+                <div class="card-mini-stats">
+                    <div class="mini-stat">
+                        <span class="mini-label">Wins</span>
+                        <span class="mini-value" id="blackjack-wins">0</span>
                     </div>
-                    <a href="games/blackjack.html" class="play-button">Play Now</a>
-                </div>
-
-                <!-- Slot Machine -->
-                <div class="game-card">
-                    <div class="game-icon">🎰</div>
-                    <h3 class="game-title">Slot Machine</h3>
-                    <p class="game-description">Spin the reels and match the symbols to win!</p>
-                    <div class="game-stats">
-                        <span>Wins: <strong id="slots-wins">0</strong></span>
-                        <span>Played: <strong id="slots-plays">0</strong></span>
+                    <div class="mini-stat">
+                        <span class="mini-label">Played</span>
+                        <span class="mini-value" id="blackjack-plays">0</span>
                     </div>
-                    <a href="games/slots.html" class="play-button">Play Now</a>
                 </div>
-
-                <!-- Dice Roller -->
-                <div class="game-card">
-                    <div class="game-icon">🎲</div>
-                    <h3 class="game-title">Dice Roller</h3>
-                    <p class="game-description">Roll the dice and bet on the outcome!</p>
-                    <div class="game-stats">
-                        <span>Wins: <strong id="dice-wins">0</strong></span>
-                        <span>Played: <strong id="dice-plays">0</strong></span>
-                    </div>
-                    <a href="games/dice.html" class="play-button">Play Now</a>
-                </div>
-
-                <!-- Higher or Lower -->
-                <div class="game-card">
-                    <div class="game-icon">🃏</div>
-                    <h3 class="game-title">Higher or Lower</h3>
-                    <p class="game-description">Guess if the next card will be higher or lower!</p>
-                    <div class="game-stats">
-                        <span>Wins: <strong id="higher-wins">0</strong></span>
-                        <span>Played: <strong id="higher-plays">0</strong></span>
-                    </div>
-                    <a href="games/higher-lower.html" class="play-button">Play Now</a>
-                </div>
-
-                <!-- Memory Match -->
-                <div class="game-card">
-                    <div class="game-icon">🧩</div>
-                    <h3 class="game-title">Memory Match</h3>
-                    <p class="game-description">Find matching pairs of cards. Test your memory!</p>
-                    <div class="game-stats">
-                        <span>Wins: <strong id="memory-wins">0</strong></span>
-                        <span>Played: <strong id="memory-plays">0</strong></span>
-                    </div>
-                    <a href="games/memory.html" class="play-button">Play Now</a>
-                </div>
-
-                <!-- Coming Soon Card -->
-                <div class="game-card coming-soon">
-                    <div class="game-icon">🔜</div>
-                    <h3 class="game-title">More Games Coming!</h3>
-                    <p class="game-description">Roulette, Poker, and more games in development...</p>
-                    <div class="game-stats">
-                        <span>Stay tuned!</span>
-                    </div>
-                    <button class="play-button" disabled>Coming Soon</button>
-                </div>
+                <a href="games/blackjack.html" class="play-btn-large">
+                    <span>PLAY NOW</span>
+                    <div class="btn-glow"></div>
+                </a>
             </div>
+
+            <!-- Game Card 2: Slot Machine -->
+            <div class="showcase-card slots-card">
+                <div class="card-glow"></div>
+                <div class="card-icon-large">🎰</div>
+                <h2 class="card-game-title">SLOT MACHINE</h2>
+                <p class="card-description">Spin the reels! Match symbols for massive payouts up to 500x!</p>
+                <div class="card-mini-stats">
+                    <div class="mini-stat">
+                        <span class="mini-label">Wins</span>
+                        <span class="mini-value" id="slots-wins">0</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Played</span>
+                        <span class="mini-value" id="slots-plays">0</span>
+                    </div>
+                </div>
+                <a href="games/slots.html" class="play-btn-large">
+                    <span>PLAY NOW</span>
+                    <div class="btn-glow"></div>
+                </a>
+            </div>
+
+            <!-- Game Card 3: Dice Roller -->
+            <div class="showcase-card dice-card">
+                <div class="card-glow"></div>
+                <div class="card-icon-large">🎲🎲</div>
+                <h2 class="card-game-title">DICE ROLLER</h2>
+                <p class="card-description">Roll the dice and bet on the outcome. Lucky 7 pays 5x!</p>
+                <div class="card-mini-stats">
+                    <div class="mini-stat">
+                        <span class="mini-label">Wins</span>
+                        <span class="mini-value" id="dice-wins">0</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Played</span>
+                        <span class="mini-value" id="dice-plays">0</span>
+                    </div>
+                </div>
+                <a href="games/dice.html" class="play-btn-large">
+                    <span>PLAY NOW</span>
+                    <div class="btn-glow"></div>
+                </a>
+            </div>
+
+            <!-- Game Card 4: Higher or Lower -->
+            <div class="showcase-card higher-card">
+                <div class="card-glow"></div>
+                <div class="card-icon-large">🃏</div>
+                <h2 class="card-game-title">HIGHER OR LOWER</h2>
+                <p class="card-description">Guess the next card! Build winning streaks and climb higher!</p>
+                <div class="card-mini-stats">
+                    <div class="mini-stat">
+                        <span class="mini-label">Best Streak</span>
+                        <span class="mini-value" id="higher-best">0</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Played</span>
+                        <span class="mini-value" id="higher-plays">0</span>
+                    </div>
+                </div>
+                <a href="games/higher-lower.html" class="play-btn-large">
+                    <span>PLAY NOW</span>
+                    <div class="btn-glow"></div>
+                </a>
+            </div>
+
+            <!-- Game Card 5: Memory Match -->
+            <div class="showcase-card memory-card">
+                <div class="card-glow"></div>
+                <div class="card-icon-large">🧩</div>
+                <h2 class="card-game-title">MEMORY MATCH</h2>
+                <p class="card-description">Find all matching pairs! Challenge your memory and speed!</p>
+                <div class="card-mini-stats">
+                    <div class="mini-stat">
+                        <span class="mini-label">Best Score</span>
+                        <span class="mini-value" id="memory-best">-</span>
+                    </div>
+                    <div class="mini-stat">
+                        <span class="mini-label">Played</span>
+                        <span class="mini-value" id="memory-plays">0</span>
+                    </div>
+                </div>
+                <a href="games/memory.html" class="play-btn-large">
+                    <span>PLAY NOW</span>
+                    <div class="btn-glow"></div>
+                </a>
+            </div>
+
         </div>
     </section>
 
-    <!-- Quick Stats Section -->
-    <section class="quick-stats">
+    <!-- Bottom CTA -->
+    <section class="bottom-cta">
         <div class="container">
-            <h2 class="section-title">Your Gaming Journey</h2>
-            <div class="stats-showcase">
-                <div class="stat-box">
-                    <div class="stat-icon">🏆</div>
-                    <h3>Most Played</h3>
-                    <p id="most-played-game">Play a game to start!</p>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-icon">🔥</div>
-                    <h3>Current Streak</h3>
-                    <p id="current-streak">0 wins</p>
-                </div>
-                <div class="stat-box">
-                    <div class="stat-icon">⭐</div>
-                    <h3>Best Streak</h3>
-                    <p id="best-streak">0 wins</p>
-                </div>
-            </div>
+            <h2 class="cta-title">Ready to Play?</h2>
+            <p class="cta-text">Pick any game above and start having fun! All stats are automatically saved.</p>
+            <button id="reset-all-stats" class="reset-all-btn">Reset All Statistics</button>
         </div>
     </section>
 
@@ -177,5 +185,17 @@
     </footer>
 
     <script src="script.js"></script>
+    <script>
+        // Update hub stats with additional info
+        function updateHubDisplay() {
+            const higherBest = localStorage.getItem('higher_best_streak') || '0';
+            const memoryBest = localStorage.getItem('memory_best_score');
+            
+            document.getElementById('higher-best').textContent = higherBest;
+            document.getElementById('memory-best').textContent = memoryBest === null || memoryBest === 'null' ? '-' : memoryBest;
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateHubDisplay);
+    </script>
 </body>
 </html>
