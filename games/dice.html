@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dice Roller - Game Arcade</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🎲 DICE ROLLER</h1>
+            <ul class="nav-menu">
+                <li><a href="../index.html">← Back to Games</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">☀️</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Score Tracker -->
+    <div class="score-tracker">
+        <div class="container">
+            <div class="score-grid">
+                <div class="score-item">
+                    <span class="score-label">Wins</span>
+                    <span id="wins-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Losses</span>
+                    <span id="losses-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Total Rolls</span>
+                    <span id="rolls-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Win Rate</span>
+                    <span id="win-rate" class="score-value">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <h2 class="game-title">🎲 DICE ROLLER</h2>
+        
+        <div class="game-area">
+            <h3 class="hand-title">Choose Your Bet:</h3>
+            
+            <!-- Betting Options -->
+            <div class="bet-options">
+                <button class="bet-option" data-bet="7-up">7-UP (8-12)</button>
+                <button class="bet-option" data-bet="lucky-7">LUCKY 7</button>
+                <button class="bet-option" data-bet="7-down">7-DOWN (2-6)</button>
+            </div>
+
+            <!-- Dice Display -->
+            <div class="dice-container">
+                <div class="dice" id="dice1">
+                    <div class="dice-face">⚀</div>
+                </div>
+                <div class="dice" id="dice2">
+                    <div class="dice-face">⚀</div>
+                </div>
+            </div>
+
+            <div class="total-display">
+                Total: <span id="dice-total">2</span>
+            </div>
+
+            <!-- Rules -->
+            <div class="rules-box">
+                <h4>How to Play:</h4>
+                <ul>
+                    <li><strong>7-UP:</strong> Win if total is 8, 9, 10, 11, or 12 (2x payout)</li>
+                    <li><strong>LUCKY 7:</strong> Win if total is exactly 7 (5x payout)</li>
+                    <li><strong>7-DOWN:</strong> Win if total is 2, 3, 4, 5, or 6 (2x payout)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button id="roll-btn" class="game-button new-game" disabled>
+                Select a bet first
+            </button>
+        </div>
+
+        <!-- Game Message -->
+        <div id="game-message" class="game-message"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Game Arcade. Created as a web development project.</p>
+            <p><a href="../index.html">Back to Games</a></p>
+        </div>
+    </footer>
+
+    <style>
+        .bet-options {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .bet-option {
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: var(--secondary-bg);
+            color: var(--primary-text);
+            border: 3px solid var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .bet-option:hover {
+            border-color: var(--accent-color);
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            transform: translateY(-3px);
+        }
+
+        .bet-option.selected {
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .dice-container {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 3rem 0;
+        }
+
+        .dice {
+            width: 120px;
+            height: 120px;
+            background: var(--primary-bg);
+            border: 4px solid var(--accent-color);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.1s ease;
+        }
+
+        .dice.rolling {
+            animation: roll 0.5s ease-in-out;
+        }
+
+        @keyframes roll {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(90deg) scale(1.1); }
+            50% { transform: rotate(180deg) scale(0.9); }
+            75% { transform: rotate(270deg) scale(1.1); }
+        }
+
+        .total-display {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-text);
+            margin: 2rem 0;
+        }
+
+        .total-display span {
+            color: var(--accent-color);
+            font-size: 3rem;
+        }
+
+        .rules-box {
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .rules-box h4 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .rules-box li {
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            color: var(--secondary-text);
+        }
+
+        .rules-box strong {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .dice-container {
+                gap: 1.5rem;
+            }
+            
+            .dice {
+                width: 90px;
+                height: 90px;
+                font-size: 4.5rem;
+            }
+            
+            .bet-options {
+                flex-direction: column;
+            }
+            
+            .bet-option {
+                width: 100%;
+            }
+        }
+    </style>
+
+    <script src="../script.js"></script>
+    <script>
+        const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+        let wins = parseInt(localStorage.getItem('dice_wins')) || 0;
+        let losses = parseInt(localStorage.getItem('dice_losses')) || 0;
+        let rolls = parseInt(localStorage.getItem('dice_plays')) || 0;
+        let currentBet = null;
+        let isRolling = false;
+
+        const dice1 = document.getElementById('dice1');
+        const dice2 = document.getElementById('dice2');
+        const rollBtn = document.getElementById('roll-btn');
+        const messageDiv = document.getElementById('game-message');
+        const betOptions = document.querySelectorAll('.bet-option');
+
+        updateDisplay();
+
+        betOptions.forEach(btn => {
+            btn.addEventListener('click', () => {
+                betOptions.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                currentBet = btn.dataset.bet;
+                rollBtn.disabled = false;
+                rollBtn.textContent = 'ROLL DICE!';
+                messageDiv.textContent = '';
+                messageDiv.className = 'game-message';
+            });
+        });
+
+        rollBtn.addEventListener('click', rollDice);
+
+        function rollDice() {
+            if (isRolling || !currentBet) return;
+
+            isRolling = true;
+            rollBtn.disabled = true;
+            messageDiv.textContent = 'Rolling...';
+            messageDiv.className = 'game-message';
+
+            dice1.classList.add('rolling');
+            dice2.classList.add('rolling');
+
+            // Animate dice
+            let rollCount = 0;
+            const rollInterval = setInterval(() => {
+                const random1 = Math.floor(Math.random() * 6);
+                const random2 = Math.floor(Math.random() * 6);
+                dice1.querySelector('.dice-face').textContent = diceFaces[random1];
+                dice2.querySelector('.dice-face').textContent = diceFaces[random2];
+                
+                rollCount++;
+                if (rollCount > 10) {
+                    clearInterval(rollInterval);
+                    finishRoll();
+                }
+            }, 100);
+        }
+
+        function finishRoll() {
+            const result1 = Math.floor(Math.random() * 6) + 1;
+            const result2 = Math.floor(Math.random() * 6) + 1;
+            const total = result1 + result2;
+
+            dice1.querySelector('.dice-face').textContent = diceFaces[result1 - 1];
+            dice2.querySelector('.dice-face').textContent = diceFaces[result2 - 1];
+            document.getElementById('dice-total').textContent = total;
+
+            setTimeout(() => {
+                dice1.classList.remove('rolling');
+                dice2.classList.remove('rolling');
+                checkWin(total);
+            }, 500);
+
+            rolls++;
+            localStorage.setItem('dice_plays', rolls);
+        }
+
+        function checkWin(total) {
+            let won = false;
+            let message = '';
+            let multiplier = 1;
+
+            if (currentBet === '7-up' && total >= 8) {
+                won = true;
+                multiplier = 2;
+                message = `7-UP WIN! Total: ${total} (2x)`;
+            } else if (currentBet === 'lucky-7' && total === 7) {
+                won = true;
+                multiplier = 5;
+                message = `LUCKY 7! Total: ${total} (5x) 🎉`;
+            } else if (currentBet === '7-down' && total <= 6) {
+                won = true;
+                multiplier = 2;
+                message = `7-DOWN WIN! Total: ${total} (2x)`;
+            } else {
+                message = `Lost! Total: ${total}`;
+            }
+
+            if (won) {
+                wins++;
+                localStorage.setItem('dice_wins', wins);
+                showMessage(message, 'win');
+            } else {
+                losses++;
+                localStorage.setItem('dice_losses', losses);
+                showMessage(message, 'lose');
+            }
+
+            updateDisplay();
+            
+            // Reset bet
+            betOptions.forEach(b => b.classList.remove('selected'));
+            currentBet = null;
+            rollBtn.disabled = true;
+            rollBtn.textContent = 'Select a bet first';
+            isRolling = false;
+        }
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `game-message ${type}`;
+        }
+
+        function updateDisplay() {
+            document.getElementById('wins-count').textContent = wins;
+            document.getElementById('losses-count').textContent = losses;
+            document.getElementById('rolls-count').textContent = rolls;
+            
+            const totalGames = wins + losses;
+            const winRate = totalGames > 0 ? Math.round((wins / totalGames) * 100) : 0;
+            document.getElementById('win-rate').textContent = winRate + '%';
+        }
+    </script>
+</body>
+</html>
