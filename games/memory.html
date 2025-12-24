@@ -134,35 +134,40 @@
             align-items: center;
             justify-content: center;
             border-radius: 12px;
-            backface-visibility: hidden;
             position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .card-back {
             background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
             color: var(--primary-bg);
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: 800;
         }
 
         .card-front {
-            transform: rotateY(180deg);
+            background: var(--secondary-bg);
+            font-size: 3rem;
         }
 
+        /* Show/hide logic */
         .memory-card:not(.flipped) .card-front {
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .memory-card:not(.flipped) .card-back {
-            display: flex;
+            opacity: 1;
         }
 
         .memory-card.flipped .card-back {
-            display: none;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .memory-card.flipped .card-front {
-            display: flex;
+            opacity: 1;
         }
 
         .info-box {
