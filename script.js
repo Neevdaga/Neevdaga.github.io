@@ -12,6 +12,61 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ========== DARK MODE TOGGLE ==========
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+
+// Check for saved theme preference or default to light mode
+const currentTheme = localStorage.getItem('theme') || 'light';
+if (currentTheme === 'dark') {
+    body.classList.add('dark-mode');
+    if (themeToggle) themeToggle.textContent = '☀️';
+}
+
+// Toggle theme
+if (themeToggle) {
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('dark-mode');
+        
+        // Update button icon
+        if (body.classList.contains('dark-mode')) {
+            themeToggle.textContent = '☀️';
+            localStorage.setItem('theme', 'dark');
+        } else {
+            themeToggle.textContent = '🌙';
+            localStorage.setItem('theme', 'light');
+        }
+    });
+}
+
+// ========== RESET STATISTICS ==========
+const resetStatsBtn = document.getElementById('reset-stats');
+if (resetStatsBtn) {
+    resetStatsBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset all statistics? This cannot be undone.')) {
+            localStorage.setItem('blackjack_wins', '0');
+            localStorage.setItem('blackjack_losses', '0');
+            localStorage.setItem('blackjack_ties', '0');
+            
+            // Update display
+            document.getElementById('wins-count').textContent = '0';
+            document.getElementById('losses-count').textContent = '0';
+            document.getElementById('ties-count').textContent = '0';
+            document.getElementById('win-rate').textContent = '0%';
+            
+            // Show confirmation
+            const originalText = resetStatsBtn.textContent;
+            resetStatsBtn.textContent = 'Reset!';
+            resetStatsBtn.style.backgroundColor = '#4caf50';
+            
+            setTimeout(() => {
+                resetStatsBtn.textContent = originalText;
+                resetStatsBtn.style.backgroundColor = '';
+            }, 2000);
+        }
+    });
+}
+
 // Contact form submission handler
 const contactForm = document.getElementById('contact-form');
 if (contactForm) {
