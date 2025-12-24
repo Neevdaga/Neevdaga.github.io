@@ -4,7 +4,131 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeResetButton();
     initializeFormHandling();
     initializeAnimations();
+    updateHubStats();
 });
+
+// ========== UPDATE HUB STATISTICS ==========
+function updateHubStats() {
+    // Only run on hub page
+    if (!document.getElementById('total-wins')) return;
+
+    // Collect stats from all games
+    const blackjackWins = parseInt(localStorage.getItem('blackjack_wins')) || 0;
+    const blackjackLosses = parseInt(localStorage.getItem('blackjack_losses')) || 0;
+    const blackjackTies = parseInt(localStorage.getItem('blackjack_ties')) || 0;
+    const blackjackPlays = blackjackWins + blackjackLosses + blackjackTies;
+
+    const slotsWins = parseInt(localStorage.getItem('slots_wins')) || 0;
+    const slotsPlays = parseInt(localStorage.getItem('slots_plays')) || 0;
+
+    const diceWins = parseInt(localStorage.getItem('dice_wins')) || 0;
+    const diceLosses = parseInt(localStorage.getItem('dice_losses')) || 0;
+    const dicePlays = parseInt(localStorage.getItem('dice_plays')) || 0;
+
+    const higherWins = parseInt(localStorage.getItem('higher_wins')) || 0;
+    const higherPlays = parseInt(localStorage.getItem('higher_plays')) || 0;
+
+    const memoryWins = parseInt(localStorage.getItem('memory_wins')) || 0;
+    const memoryPlays = parseInt(localStorage.getItem('memory_plays')) || 0;
+
+    // Calculate totals
+    const totalWins = blackjackWins + slotsWins + diceWins + higherWins + memoryWins;
+    const totalGames = blackjackPlays + slotsPlays + dicePlays + higherPlays + memoryPlays;
+    const totalLosses = blackjackLosses + diceLosses + (slotsPlays - slotsWins) + (higherPlays - higherWins);
+
+    // Update hub display
+    document.getElementById('total-wins').textContent = totalWins;
+    document.getElementById('total-games').textContent = totalGames;
+
+    const winRate = totalGames > 0 ? Math.round((totalWins / totalGames) * 100) : 0;
+    document.getElementById('overall-winrate').textContent = winRate + '%';
+
+    // Find favorite game
+    const gamePlays = {
+        'Blackjack': blackjackPlays,
+        'Slots': slotsPlays,
+        'Dice': dicePlays,
+        'Higher/Lower': higherPlays,
+        'Memory': memoryPlays
+    };
+    
+    let favoriteGame = '-';
+    let maxPlays = 0;
+    for (const [game, plays] of Object.entries(gamePlays)) {
+        if (plays > maxPlays) {
+            maxPlays = plays;
+            favoriteGame = game;
+        }
+    }
+    document.getElementById('favorite-game').textContent = favoriteGame;
+
+    // Update individual game stats
+    if (document.getElementById('blackjack-wins')) {
+        document.getElementById('blackjack-wins').textContent = blackjackWins;
+        document.getElementById('blackjack-plays').textContent = blackjackPlays;
+        document.getElementById('slots-wins').textContent = slotsWins;
+        document.getElementById('slots-plays').textContent = slotsPlays;
+        document.getElementById('dice-wins').textContent = diceWins;
+        document.getElementById('dice-plays').textContent = dicePlays;
+        document.getElementById('higher-wins').textContent = higherWins;
+        document.getElementById('higher-plays').textContent = higherPlays;
+        document.getElementById('memory-wins').textContent = memoryWins;
+        document.getElementById('memory-plays').textContent = memoryPlays;
+    }
+
+    // Update streak info
+    const currentStreak = parseInt(localStorage.getItem('current_streak')) || 0;
+    const bestStreak = parseInt(localStorage.getItem('best_streak')) || 0;
+
+    if (document.getElementById('current-streak')) {
+        document.getElementById('current-streak').textContent = currentStreak + ' wins';
+    }
+    if (document.getElementById('best-streak')) {
+        document.getElementById('best-streak').textContent = bestStreak + ' wins';
+    }
+
+    // Most played
+    if (document.getElementById('most-played-game')) {
+        document.getElementById('most-played-game').textContent = 
+            maxPlays > 0 ? `${favoriteGame} (${maxPlays} games)` : 'Play a game to start!';
+    }
+
+    // Reset all stats button
+    const resetAllBtn = document.getElementById('reset-all-stats');
+    if (resetAllBtn) {
+        resetAllBtn.addEventListener('click', function() {
+            if (confirm('⚠️ Reset ALL game statistics?\n\nThis will erase stats for:\n• Blackjack\n• Slots\n• Dice\n• Higher or Lower\n• Memory Match\n\nThis cannot be undone!')) {
+                // Clear all stats
+                const keys = Object.keys(localStorage);
+                keys.forEach(key => {
+                    if (key.includes('_wins') || key.includes('_losses') || 
+                        key.includes('_plays') || key.includes('_ties') ||
+                        key.includes('streak') || key.includes('credits') ||
+                        key.includes('best_')) {
+                        localStorage.removeItem(key);
+                    }
+                });
+                
+                // Reset credits
+                localStorage.setItem('slots_credits', '1000');
+                
+                // Refresh display
+                updateHubStats();
+                
+                // Visual feedback
+                resetAllBtn.textContent = '✓ All Reset!';
+                resetAllBtn.style.backgroundColor = '#00ff88';
+                resetAllBtn.style.color = '#000';
+                
+                setTimeout(() => {
+                    resetAllBtn.textContent = 'Reset All Stats';
+                    resetAllBtn.style.backgroundColor = '';
+                    resetAllBtn.style.color = '';
+                }, 2000);
+            }
+        });
+    }
+}
 
 // ========== DARK MODE TOGGLE ==========
 function initializeTheme() {
