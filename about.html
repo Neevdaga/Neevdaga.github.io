@@ -3,110 +3,186 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Blackjack Game</title>
+    <title>About - Game Arcade</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
-            <h1 class="logo">♠ Blackjack ♥</h1>
+            <h1 class="logo">🎮 GAME ARCADE</h1>
             <ul class="nav-menu">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="game.html">Play Game</a></li>
+                <li><a href="index.html">Games</a></li>
                 <li><a href="about.html" class="active">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">☀️</button></li>
             </ul>
         </div>
     </nav>
 
     <!-- About Section -->
     <section class="about-section">
-        <h2 class="section-title">About This Project</h2>
+        <h2 class="section-title">About Game Arcade</h2>
         
         <div class="about-content">
-            <h3>The Journey from Python to Web</h3>
+            <h3>From One Game to a Full Arcade</h3>
             <p>
-                This Blackjack game started as a Python project using Tkinter for the graphical 
-                user interface. The challenge was to bring this desktop application to the web, 
-                making it accessible to anyone with a browser. Using PyScript, a technology that 
-                allows Python to run directly in web browsers, this conversion became possible.
+                What started as a simple Python Blackjack game using Tkinter has evolved into a complete 
+                gaming hub featuring five unique games, all playable directly in your browser. The journey 
+                began with converting a desktop card game to the web and grew into something much bigger—a 
+                full-featured game arcade showcasing the power of modern web technologies.
             </p>
 
-            <h3>Technical Details</h3>
-            <h3>Features</h3>
+            <h3>The Original: Blackjack</h3>
+            <p>
+                The foundation of this project was a Blackjack game originally written in Python with a 
+                Tkinter GUI. The challenge was to bring this desktop application to the web using PyScript, 
+                a technology that allows Python to run directly in web browsers. This conversion involved:
+            </p>
             <ul>
-                <li><strong>Dark Mode Toggle:</strong> Switch between light and dark themes for comfortable viewing</li>
-                <li><strong>Score Tracker:</strong> Automatically tracks your wins, losses, ties, and win rate</li>
-                <li><strong>Persistent Statistics:</strong> Your stats are saved and loaded across sessions</li>
-                <li>Complete deck creation with all four suits and thirteen ranks</li>
-                <li>Proper Blackjack hand value calculation with Ace handling (1 or 11)</li>
-                <li>Dealer AI that follows standard casino rules</li>
-                <li>Win/loss/tie detection logic</li>
-                <li>Clean, user-friendly interface</li>
+                <li>Replacing Tkinter GUI elements with HTML and CSS</li>
+                <li>Adapting Python game logic to work with PyScript</li>
+                <li>Implementing JavaScript event handlers using PyScript's create_proxy function</li>
+                <li>Maintaining the same game algorithms and rules in the browser environment</li>
             </ul>
 
-            <h3>Web Conversion Process</h3>
+            <h3>Expansion to a Game Hub</h3>
             <p>
-                The conversion to web involved several key steps. The Tkinter GUI elements were 
-                replaced with HTML and CSS, creating a modern, responsive interface. The Python 
-                game logic was adapted to work with PyScript, allowing the same algorithms to run 
-                in the browser. JavaScript event handlers were implemented using PyScript's 
-                create_proxy function to connect user interactions with Python functions.
+                After successfully converting Blackjack, the project naturally evolved into a gaming hub. 
+                Four additional games were created to showcase different game mechanics and web technologies:
+            </p>
+            <ul>
+                <li><strong>Slot Machine:</strong> A casino-style slot game with virtual credits, multiple symbols, and exciting payouts including a 500x jackpot</li>
+                <li><strong>Dice Roller:</strong> A betting game where players predict dice outcomes with different multiplier options</li>
+                <li><strong>Higher or Lower:</strong> A card guessing game that builds tension with win streaks</li>
+                <li><strong>Memory Match:</strong> A classic memory card game testing player recall and speed</li>
+            </ul>
+
+            <h3>Technical Architecture</h3>
+            <p>
+                The game arcade is built using a unified technical stack that ensures consistency 
+                across all games while allowing each to have unique gameplay mechanics:
+            </p>
+            <ul>
+                <li><strong>HTML5:</strong> Semantic markup providing structure for all game interfaces</li>
+                <li><strong>CSS3:</strong> Modern styling with custom properties (CSS variables) enabling seamless dark/light mode switching</li>
+                <li><strong>JavaScript:</strong> Core game logic, DOM manipulation, and localStorage for persistent statistics</li>
+                <li><strong>PyScript:</strong> Powers the Blackjack game, demonstrating Python in the browser</li>
+                <li><strong>GitHub Pages:</strong> Free, reliable hosting for static web content</li>
+            </ul>
+
+            <h3>Key Features</h3>
+            <ul>
+                <li><strong>Unified Statistics System:</strong> All games track wins, losses, and plays with data saved in localStorage</li>
+                <li><strong>Dark/Light Mode:</strong> Theme toggle that works across all pages with smooth transitions</li>
+                <li><strong>Responsive Design:</strong> Fully functional on desktop, tablet, and mobile devices</li>
+                <li><strong>WCAG AAA Compliance:</strong> High contrast ratios ensure accessibility for all users</li>
+                <li><strong>No Server Required:</strong> All games run entirely client-side with no backend needed</li>
+                <li><strong>Progressive Enhancement:</strong> Core functionality works even without JavaScript, with enhanced features when available</li>
+            </ul>
+
+            <h3>Game Implementation Details</h3>
+            
+            <h4>Blackjack (PyScript)</h4>
+            <p>
+                Uses the original Python game logic with proper card deck creation, hand value calculation 
+                (including Ace handling), dealer AI following standard casino rules, and win/loss/tie detection. 
+                The conversion required careful adaptation of event handling and DOM manipulation through 
+                PyScript's JavaScript interop layer.
             </p>
 
-            <h3>Technologies Used</h3>
-            <ul>
-                <li><strong>HTML5:</strong> Semantic markup for structure</li>
-                <li><strong>CSS3:</strong> Modern styling with WCAG AAA compliance</li>
-                <li><strong>PyScript:</strong> Running Python in the browser</li>
-                <li><strong>JavaScript:</strong> Additional interactivity features</li>
-                <li><strong>GitHub Pages:</strong> Free web hosting</li>
-            </ul>
+            <h4>Slot Machine (Vanilla JavaScript)</h4>
+            <p>
+                Implements a three-reel slot system with six different symbols, each having unique payout 
+                multipliers. Features include adjustable betting (10-100 credits), credit persistence, animated 
+                reel spinning with staggered stops, and a comprehensive payout table. The game demonstrates 
+                advanced CSS animations and JavaScript timing functions.
+            </p>
 
-            <h3>Game Rules Implementation</h3>
-            <p>The game follows standard Blackjack rules:</p>
-            <ul>
-                <li>Number cards (2-10) are worth their face value</li>
-                <li>Face cards (Jack, Queen, King) are worth 10 points</li>
-                <li>Aces can be worth either 1 or 11 points (automatically adjusted)</li>
-                <li>The goal is to get as close to 21 as possible without going over</li>
-                <li>The dealer must hit on 16 or less and stand on 17 or more</li>
-            </ul>
+            <h4>Dice Roller (JavaScript + CSS Animations)</h4>
+            <p>
+                A betting game with three options: 7-UP (8-12), LUCKY 7 (exactly 7), and 7-DOWN (2-6). 
+                Features realistic dice animations using CSS transforms, different payout multipliers for 
+                each bet type, and a clean betting interface. The dice use Unicode characters (⚀-⚅) for 
+                authentic appearance.
+            </p>
+
+            <h4>Higher or Lower (Pure JavaScript)</h4>
+            <p>
+                Challenges players to predict whether the next card will be higher or lower, with proper 
+                card value calculation (2-14 for 2-Ace). The game maintains a continuous streak counter, 
+                automatically progresses the current card to the next round on wins, and tracks best 
+                streaks across sessions. Features smooth card flip animations and immediate feedback.
+            </p>
+
+            <h4>Memory Match (JavaScript with Grid Layout)</h4>
+            <p>
+                A 4x4 grid of cards (8 pairs) using emoji symbols. Implements card flipping with state 
+                management, match detection with visual feedback, move counting for scoring, and animated 
+                card states (normal, flipped, matched). Uses CSS Grid for responsive card layout and 
+                tracks best scores for competitive play.
+            </p>
 
             <h3>Design Philosophy</h3>
             <p>
-                The website design emphasizes clarity and accessibility. All text maintains WCAG 
-                AAA contrast ratios for maximum readability. The interface is responsive, working 
-                seamlessly on desktop computers, tablets, and mobile devices. The color scheme 
-                uses high-contrast combinations to ensure visibility for all users.
+                The visual design emphasizes clarity, engagement, and accessibility. All games share a 
+                consistent aesthetic with glassmorphism effects (frosted glass appearance), gold gradient 
+                accents for important elements, smooth animations and transitions, and high-contrast color 
+                schemes meeting WCAG AAA standards. The dark mode default provides a comfortable casino-like 
+                atmosphere, while light mode offers a clean alternative.
             </p>
 
-            <h3>Future Enhancements</h3>
+            <h3>Data Persistence Strategy</h3>
+            <p>
+                All game statistics are stored in the browser's localStorage, allowing data to persist across 
+                sessions without requiring a backend. Each game maintains its own set of statistics (wins, 
+                losses, plays, streaks, best scores), and the hub aggregates this data to show overall 
+                performance. Users can reset individual game stats or all statistics from the hub.
+            </p>
+
+            <h3>Future Enhancement Possibilities</h3>
             <p>Potential improvements for future versions include:</p>
             <ul>
-                <li>Betting system with virtual chips</li>
-                <li>Statistics tracking across multiple games</li>
-                <li>Multiple deck support</li>
-                <li>Split and double down options</li>
-                <li>Multiplayer functionality</li>
-                <li>Sound effects and animations</li>
+                <li>Sound effects and background music for enhanced immersion</li>
+                <li>Achievement and badge system to encourage exploration</li>
+                <li>Daily challenges with special rewards</li>
+                <li>Multiplayer functionality using WebSockets</li>
+                <li>Additional games (Poker, Roulette, Sudoku, etc.)</li>
+                <li>Tournament mode with leaderboards</li>
+                <li>Advanced Blackjack rules (split, double down, insurance)</li>
+                <li>Customizable themes and card designs</li>
+                <li>Progressive Web App (PWA) installation for offline play</li>
             </ul>
+
+            <h3>Educational Value</h3>
+            <p>
+                This project demonstrates proficiency in modern web development practices including 
+                responsive design with CSS Grid and Flexbox, JavaScript event handling and state management, 
+                localStorage API for client-side data persistence, CSS custom properties for theming, 
+                PyScript integration for Python in the browser, animation and transition timing, accessible 
+                design following WCAG guidelines, and git/GitHub workflow for version control and deployment.
+            </p>
+
+            <h3>Open Source and Learning</h3>
+            <p>
+                All code for this project is publicly available and can serve as a learning resource for 
+                those interested in web game development, PyScript implementation, or creating accessible 
+                web applications. The progression from a single Python game to a full web arcade demonstrates 
+                the iterative nature of software development and the power of building upon foundational work.
+            </p>
         </div>
 
         <div style="text-align: center; margin-top: 3rem;">
-            <a href="game.html" class="cta-button">Try the Game</a>
+            <a href="index.html" class="cta-button">Back to Games</a>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2024 Blackjack Game Showcase. Created as a web development project.</p>
+            <p>&copy; 2024 Game Arcade. Created as a web development project.</p>
             <p>
-                <a href="index.html">Home</a> | 
-                <a href="game.html">Play</a> | 
+                <a href="index.html">Games</a> | 
                 <a href="about.html">About</a> | 
                 <a href="contact.html">Contact</a>
             </p>
