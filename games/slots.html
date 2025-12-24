@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slot Machine - Game Arcade</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">🎰 SLOT MACHINE</h1>
+            <ul class="nav-menu">
+                <li><a href="../index.html">← Back to Games</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="../contact.html">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">☀️</button></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Score Tracker -->
+    <div class="score-tracker">
+        <div class="container">
+            <div class="score-grid">
+                <div class="score-item">
+                    <span class="score-label">Credits</span>
+                    <span id="credits" class="score-value">1000</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Bet Amount</span>
+                    <span id="bet-amount" class="score-value">10</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Wins</span>
+                    <span id="wins-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Spins</span>
+                    <span id="spins-count" class="score-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <h2 class="game-title">🎰 SLOT MACHINE</h2>
+        
+        <div class="game-area">
+            <!-- Slot Reels -->
+            <div class="slot-machine">
+                <div class="slot-reel" id="reel1">
+                    <div class="slot-symbol">🍒</div>
+                </div>
+                <div class="slot-reel" id="reel2">
+                    <div class="slot-symbol">🍋</div>
+                </div>
+                <div class="slot-reel" id="reel3">
+                    <div class="slot-symbol">🍊</div>
+                </div>
+            </div>
+
+            <!-- Payout Table -->
+            <div class="payout-table">
+                <h3>Payouts:</h3>
+                <div class="payout-row">
+                    <span>🍒 🍒 🍒</span>
+                    <span>100x</span>
+                </div>
+                <div class="payout-row">
+                    <span>💎 💎 💎</span>
+                    <span>50x</span>
+                </div>
+                <div class="payout-row">
+                    <span>⭐ ⭐ ⭐</span>
+                    <span>25x</span>
+                </div>
+                <div class="payout-row">
+                    <span>🍋 🍋 🍋</span>
+                    <span>15x</span>
+                </div>
+                <div class="payout-row">
+                    <span>🍊 🍊 🍊</span>
+                    <span>10x</span>
+                </div>
+                <div class="payout-row">
+                    <span>7️⃣ 7️⃣ 7️⃣</span>
+                    <span>500x JACKPOT!</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bet Controls -->
+        <div class="bet-controls">
+            <button id="decrease-bet" class="bet-button">- Bet</button>
+            <span class="bet-display">Bet: <strong id="current-bet">10</strong> credits</span>
+            <button id="increase-bet" class="bet-button">+ Bet</button>
+        </div>
+
+        <!-- Game Controls -->
+        <div class="game-controls">
+            <button id="spin-btn" class="game-button new-game">SPIN!</button>
+            <button id="max-bet-btn" class="game-button hit">MAX BET</button>
+            <button id="reset-credits-btn" class="game-button stand">RESET</button>
+        </div>
+
+        <!-- Game Message -->
+        <div id="game-message" class="game-message"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 Game Arcade. Created as a web development project.</p>
+            <p><a href="../index.html">Back to Games</a></p>
+        </div>
+    </footer>
+
+    <style>
+        .slot-machine {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: var(--secondary-bg);
+            border-radius: 16px;
+        }
+
+        .slot-reel {
+            width: 120px;
+            height: 120px;
+            background: var(--primary-bg);
+            border: 4px solid var(--accent-color);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            box-shadow: inset 0 4px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .slot-reel.spinning {
+            animation: spin 0.1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-20px); }
+        }
+
+        .payout-table {
+            background: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+        }
+
+        .payout-table h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .payout-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 1rem;
+            margin: 0.3rem 0;
+            background: var(--secondary-bg);
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+
+        .payout-row span:first-child {
+            font-size: 1.5rem;
+        }
+
+        .payout-row span:last-child {
+            color: var(--accent-color);
+            font-weight: 700;
+        }
+
+        .bet-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .bet-button {
+            padding: 0.8rem 1.5rem;
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bet-button:hover {
+            background: var(--accent-hover);
+            transform: scale(1.05);
+        }
+
+        .bet-display {
+            font-size: 1.3rem;
+            color: var(--primary-text);
+        }
+
+        .bet-display strong {
+            color: var(--accent-color);
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .slot-machine {
+                gap: 1rem;
+            }
+            
+            .slot-reel {
+                width: 90px;
+                height: 90px;
+                font-size: 3.5rem;
+            }
+            
+            .payout-row {
+                font-size: 0.9rem;
+            }
+            
+            .payout-row span:first-child {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+
+    <script src="../script.js"></script>
+    <script>
+        const symbols = ['🍒', '🍋', '🍊', '⭐', '💎', '7️⃣'];
+        let credits = parseInt(localStorage.getItem('slots_credits')) || 1000;
+        let betAmount = 10;
+        let wins = parseInt(localStorage.getItem('slots_wins')) || 0;
+        let spins = parseInt(localStorage.getItem('slots_plays')) || 0;
+        let isSpinning = false;
+
+        const reel1 = document.getElementById('reel1');
+        const reel2 = document.getElementById('reel2');
+        const reel3 = document.getElementById('reel3');
+        const spinBtn = document.getElementById('spin-btn');
+        const maxBetBtn = document.getElementById('max-bet-btn');
+        const resetBtn = document.getElementById('reset-credits-btn');
+        const messageDiv = document.getElementById('game-message');
+
+        updateDisplay();
+
+        document.getElementById('decrease-bet').addEventListener('click', () => {
+            if (betAmount > 10) {
+                betAmount -= 10;
+                updateDisplay();
+            }
+        });
+
+        document.getElementById('increase-bet').addEventListener('click', () => {
+            if (betAmount < 100 && betAmount < credits) {
+                betAmount += 10;
+                updateDisplay();
+            }
+        });
+
+        maxBetBtn.addEventListener('click', () => {
+            betAmount = Math.min(100, credits);
+            updateDisplay();
+        });
+
+        resetBtn.addEventListener('click', () => {
+            if (confirm('Reset credits to 1000?')) {
+                credits = 1000;
+                localStorage.setItem('slots_credits', credits);
+                updateDisplay();
+            }
+        });
+
+        spinBtn.addEventListener('click', spin);
+
+        function spin() {
+            if (isSpinning) return;
+            if (credits < betAmount) {
+                showMessage('Not enough credits!', 'lose');
+                return;
+            }
+
+            isSpinning = true;
+            credits -= betAmount;
+            spins++;
+            localStorage.setItem('slots_plays', spins);
+            
+            spinBtn.disabled = true;
+            messageDiv.textContent = '';
+            messageDiv.className = 'game-message';
+
+            // Animate reels
+            reel1.classList.add('spinning');
+            reel2.classList.add('spinning');
+            reel3.classList.add('spinning');
+
+            // Change symbols rapidly
+            let spinCount = 0;
+            const spinInterval = setInterval(() => {
+                reel1.querySelector('.slot-symbol').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                reel2.querySelector('.slot-symbol').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                reel3.querySelector('.slot-symbol').textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                spinCount++;
+                if (spinCount > 20) {
+                    clearInterval(spinInterval);
+                    stopReels();
+                }
+            }, 100);
+        }
+
+        function stopReels() {
+            // Final result
+            const result1 = symbols[Math.floor(Math.random() * symbols.length)];
+            const result2 = symbols[Math.floor(Math.random() * symbols.length)];
+            const result3 = symbols[Math.floor(Math.random() * symbols.length)];
+
+            setTimeout(() => {
+                reel1.classList.remove('spinning');
+                reel1.querySelector('.slot-symbol').textContent = result1;
+            }, 300);
+
+            setTimeout(() => {
+                reel2.classList.remove('spinning');
+                reel2.querySelector('.slot-symbol').textContent = result2;
+            }, 600);
+
+            setTimeout(() => {
+                reel3.classList.remove('spinning');
+                reel3.querySelector('.slot-symbol').textContent = result3;
+                checkWin(result1, result2, result3);
+            }, 900);
+        }
+
+        function checkWin(s1, s2, s3) {
+            let winAmount = 0;
+            let message = '';
+
+            if (s1 === s2 && s2 === s3) {
+                // Three of a kind!
+                if (s1 === '7️⃣') {
+                    winAmount = betAmount * 500;
+                    message = '🎰 JACKPOT! 7️⃣7️⃣7️⃣';
+                } else if (s1 === '🍒') {
+                    winAmount = betAmount * 100;
+                    message = 'HUGE WIN! 🍒🍒🍒';
+                } else if (s1 === '💎') {
+                    winAmount = betAmount * 50;
+                    message = 'BIG WIN! 💎💎💎';
+                } else if (s1 === '⭐') {
+                    winAmount = betAmount * 25;
+                    message = 'NICE WIN! ⭐⭐⭐';
+                } else if (s1 === '🍋') {
+                    winAmount = betAmount * 15;
+                    message = 'You WIN! 🍋🍋🍋';
+                } else if (s1 === '🍊') {
+                    winAmount = betAmount * 10;
+                    message = 'You WIN! 🍊🍊🍊';
+                }
+
+                wins++;
+                localStorage.setItem('slots_wins', wins);
+            }
+
+            if (winAmount > 0) {
+                credits += winAmount;
+                showMessage(`${message} +${winAmount} credits!`, 'win');
+            } else {
+                showMessage('Try again!', 'lose');
+            }
+
+            localStorage.setItem('slots_credits', credits);
+            updateDisplay();
+            isSpinning = false;
+            spinBtn.disabled = false;
+        }
+
+        function showMessage(text, type) {
+            messageDiv.textContent = text;
+            messageDiv.className = `game-message ${type}`;
+        }
+
+        function updateDisplay() {
+            document.getElementById('credits').textContent = credits;
+            document.getElementById('bet-amount').textContent = betAmount;
+            document.getElementById('current-bet').textContent = betAmount;
+            document.getElementById('wins-count').textContent = wins;
+            document.getElementById('spins-count').textContent = spins;
+        }
+    </script>
+</body>
+</html>
