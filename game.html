@@ -18,9 +18,37 @@
                 <li><a href="game.html" class="active">Play Game</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">🌙</button></li>
             </ul>
         </div>
     </nav>
+
+    <!-- Score Tracker -->
+    <div class="score-tracker">
+        <div class="container">
+            <div class="score-grid">
+                <div class="score-item">
+                    <span class="score-label">Wins</span>
+                    <span id="wins-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Losses</span>
+                    <span id="losses-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Ties</span>
+                    <span id="ties-count" class="score-value">0</span>
+                </div>
+                <div class="score-item">
+                    <span class="score-label">Win Rate</span>
+                    <span id="win-rate" class="score-value">0%</span>
+                </div>
+                <div class="score-item">
+                    <button id="reset-stats" class="reset-button">Reset Stats</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Game Container -->
     <div class="game-container">
@@ -55,14 +83,52 @@
 
     <script type="py" config="pyscript.json">
 import random
-from js import document
-from pyodide.ffi import create_proxy
+from js import document, localStorage
 
 # Game state
 deck = []
 player_hand = []
 dealer_hand = []
 game_over = False
+
+# Load stats from localStorage
+def load_stats():
+    try:
+        wins = int(localStorage.getItem('blackjack_wins') or '0')
+        losses = int(localStorage.getItem('blackjack_losses') or '0')
+        ties = int(localStorage.getItem('blackjack_ties') or '0')
+        return wins, losses, ties
+    except:
+        return 0, 0, 0
+
+def save_stats(wins, losses, ties):
+    localStorage.setItem('blackjack_wins', str(wins))
+    localStorage.setItem('blackjack_losses', str(losses))
+    localStorage.setItem('blackjack_ties', str(ties))
+
+def update_stats_display():
+    wins, losses, ties = load_stats()
+    document.getElementById('wins-count').innerHTML = str(wins)
+    document.getElementById('losses-count').innerHTML = str(losses)
+    document.getElementById('ties-count').innerHTML = str(ties)
+    
+    total_games = wins + losses
+    if total_games > 0:
+        win_rate = round((wins / total_games) * 100)
+        document.getElementById('win-rate').innerHTML = f"{win_rate}%"
+    else:
+        document.getElementById('win-rate').innerHTML = "0%"
+
+def record_result(result):
+    wins, losses, ties = load_stats()
+    if result == 'win':
+        wins += 1
+    elif result == 'loss':
+        losses += 1
+    elif result == 'tie':
+        ties += 1
+    save_stats(wins, losses, ties)
+    update_stats_display()
 
 def create_deck():
     """Create a standard deck of cards"""
@@ -80,7 +146,7 @@ def calculate_hand_value(hand):
     ace_count = 0
     
     for card in hand:
-        rank = card[:-1]  # Remove suit symbol
+        rank = card[:-1]
         
         if rank == 'A':
             total += 11
@@ -90,7 +156,6 @@ def calculate_hand_value(hand):
         else:
             total += int(rank)
     
-    # Adjust for aces
     while total > 21 and ace_count > 0:
         total -= 10
         ace_count -= 1
@@ -99,13 +164,11 @@ def calculate_hand_value(hand):
 
 def update_display(hide_dealer=False):
     """Update the card display"""
-    # Player's cards
     player_cards_text = "  ".join(player_hand)
     document.getElementById("player-cards").innerHTML = player_cards_text
     player_total = calculate_hand_value(player_hand)
     document.getElementById("player-total").innerHTML = f"Total: {player_total}"
     
-    # Dealer's cards
     if hide_dealer:
         dealer_cards_text = f"{dealer_hand[0]}  ??"
         document.getElementById("dealer-cards").innerHTML = dealer_cards_text
@@ -126,22 +189,18 @@ def new_game(event=None):
     dealer_hand = []
     game_over = False
     
-    # Deal initial cards
     player_hand.append(deck.pop())
     player_hand.append(deck.pop())
     dealer_hand.append(deck.pop())
     dealer_hand.append(deck.pop())
     
-    # Enable buttons
     document.getElementById("hit-btn").disabled = False
     document.getElementById("stand-btn").disabled = False
     
-    # Clear message
     message_elem = document.getElementById("game-message")
     message_elem.innerHTML = "Make your move!"
     message_elem.className = "game-message"
     
-    # Update display
     update_display(hide_dealer=True)
 
 def hit(event):
@@ -151,7 +210,6 @@ def hit(event):
     if game_over:
         return
     
-    # Draw a card
     player_hand.append(deck.pop())
     update_display(hide_dealer=True)
     
@@ -164,6 +222,7 @@ def hit(event):
         message_elem.className = "game-message lose"
         document.getElementById("hit-btn").disabled = True
         document.getElementById("stand-btn").disabled = True
+        record_result('loss')
     elif player_total == 21:
         stand(None)
 
@@ -178,15 +237,12 @@ def stand(event):
     document.getElementById("hit-btn").disabled = True
     document.getElementById("stand-btn").disabled = True
     
-    # Reveal dealer's hand
     update_display(hide_dealer=False)
     
-    # Dealer draws until 17 or higher
     while calculate_hand_value(dealer_hand) < 17:
         dealer_hand.append(deck.pop())
         update_display(hide_dealer=False)
     
-    # Determine winner
     player_total = calculate_hand_value(player_hand)
     dealer_total = calculate_hand_value(dealer_hand)
     
@@ -195,17 +251,23 @@ def stand(event):
     if dealer_total > 21:
         message_elem.innerHTML = "Dealer busts! You WIN! 🎉"
         message_elem.className = "game-message win"
+        record_result('win')
     elif dealer_total > player_total:
         message_elem.innerHTML = "Dealer wins! 😞"
         message_elem.className = "game-message lose"
+        record_result('loss')
     elif player_total > dealer_total:
         message_elem.innerHTML = "You WIN! 🎉"
         message_elem.className = "game-message win"
+        record_result('win')
     else:
         message_elem.innerHTML = "PUSH! It's a tie! 🤝"
         message_elem.className = "game-message tie"
+        record_result('tie')
 
 # Set up event listeners
+from pyodide.ffi import create_proxy
+
 hit_proxy = create_proxy(hit)
 stand_proxy = create_proxy(stand)
 new_game_proxy = create_proxy(new_game)
@@ -213,6 +275,9 @@ new_game_proxy = create_proxy(new_game)
 document.getElementById("hit-btn").addEventListener("click", hit_proxy)
 document.getElementById("stand-btn").addEventListener("click", stand_proxy)
 document.getElementById("new-game-btn").addEventListener("click", new_game_proxy)
+
+# Initialize stats display
+update_stats_display()
 
 # Start the first game
 new_game()
@@ -230,5 +295,7 @@ new_game()
             </p>
         </div>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
